@@ -7,30 +7,48 @@ using UnityEngine.Events;
 
 public class OpenCloseDoorOnTrigger : MonoBehaviour
 {
-    [SerializeField] private Animator _animator;
+    [SerializeField] private GameObject _door;
     [SerializeField] private UnityEvent _doorOpened = new UnityEvent();
+    [SerializeField] private UnityEvent _doorClosed = new UnityEvent();
+    private Animator _doorAnimator;
+    private bool thiefInside = false;
 
     public event UnityAction DoorOpened
     {
         add => _doorOpened.AddListener(value);
         remove => _doorOpened.RemoveListener(value);
     }
+    public event UnityAction DoorClosed
+    {
+        add => _doorClosed.AddListener(value);
+        remove => _doorClosed.RemoveListener(value);
+    }
 
     private void Start()
     {
-        _animator = GetComponent<Animator>();
+        _doorAnimator = _door.GetComponent<Animator>();
+        _doorAnimator.enabled = true;
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("OnTriggerEnter2D");
         if (col.TryGetComponent<ThiefController>(out ThiefController thiefController))
         {
-            Debug.Log("Open the door!");
-            _animator.SetTrigger("OpenDoor");
-            
-            _doorOpened.Invoke();
+            if (thiefInside)
+            {
+                _doorAnimator.SetTrigger("Close");
+                // _doorAnimator.Play();
+                thiefInside = false;
+                _doorClosed.Invoke();
+            }
+            else
+            {
+                Debug.Log("Open the door!");
+                _doorAnimator.SetTrigger("Open");
+                // _doorAnimator.Play();
+                _doorOpened.Invoke();
+                thiefInside = true;
+            }
         }
     }
-
 }

@@ -11,6 +11,7 @@ public class ThiefController : MonoBehaviour
     private float _thiefFinalXPos;
     private float _newXPos;
     private float time;
+    private bool isChestReached = false;
 
     private void Start()
     {
@@ -20,8 +21,32 @@ public class ThiefController : MonoBehaviour
 
     private void Update()
     {
+        if (isChestReached)
+        {
+            MoveLeft();
+        }
+        else
+        {
+            MoveRight();
+        }
+    }
+
+    public void ChestReached()
+    {
+        isChestReached = true;
+    }
+
+    private void MoveRight()
+    {
         time += Time.deltaTime;
         _newXPos = Mathf.MoveTowards(_thiefStartXPos, _thiefFinalXPos, _speed * time);
+        transform.position = new Vector3(_newXPos, transform.position.y);
+    }
+
+    private void MoveLeft()
+    {
+        time += Time.deltaTime;
+        _newXPos = Mathf.MoveTowards(_thiefFinalXPos, _thiefStartXPos, _speed * time);
         transform.position = new Vector3(_newXPos, transform.position.y);
     }
 }
