@@ -3,10 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChestWithCoinController : MonoBehaviour
+public class ChestObjController : MonoBehaviour
 {
     [SerializeField] private GameObject _chest;
     [SerializeField] private GameObject _coin;
+
+    private const string Open = "Open";
+    private const string Jump = "Jump";
+    
     private Animator _chestAnimator;
     private Animator _coinAnimator;
 
@@ -25,8 +29,8 @@ public class ChestWithCoinController : MonoBehaviour
         {
             Debug.Log("OnTriggerEnter2D chest");
             gameObject.SetActive(true);
-            _chestAnimator.SetTrigger("Open");
-            _coinAnimator.SetTrigger("Jump");
+            _chestAnimator.SetTrigger(Open);
+            _coinAnimator.SetTrigger(Jump);
         }
     }
 

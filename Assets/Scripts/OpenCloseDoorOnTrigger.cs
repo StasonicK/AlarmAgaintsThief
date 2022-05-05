@@ -10,8 +10,12 @@ public class OpenCloseDoorOnTrigger : MonoBehaviour
     [SerializeField] private GameObject _door;
     [SerializeField] private UnityEvent _doorOpened = new UnityEvent();
     [SerializeField] private UnityEvent _doorClosed = new UnityEvent();
+    
+    private const string Close = "Close";
+    private const string Open = "Open";
+    
     private Animator _doorAnimator;
-    private bool thiefInside = false;
+    private bool _thiefInside;
 
     public event UnityAction DoorOpened
     {
@@ -34,20 +38,18 @@ public class OpenCloseDoorOnTrigger : MonoBehaviour
     {
         if (col.TryGetComponent<ThiefController>(out ThiefController thiefController))
         {
-            if (thiefInside)
+            if (_thiefInside)
             {
-                _doorAnimator.SetTrigger("Close");
-                // _doorAnimator.Play();
-                thiefInside = false;
+                _doorAnimator.SetTrigger(Close);
+                _thiefInside = false;
                 _doorClosed.Invoke();
             }
             else
             {
                 Debug.Log("Open the door!");
-                _doorAnimator.SetTrigger("Open");
-                // _doorAnimator.Play();
+                _doorAnimator.SetTrigger(Open);
                 _doorOpened.Invoke();
-                thiefInside = true;
+                _thiefInside = true;
             }
         }
     }

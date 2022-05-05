@@ -7,6 +7,7 @@ public class ThiefController : MonoBehaviour
 {
     [SerializeField] private Transform _finalPoint;
     [SerializeField] private float _speed;
+    
     private float _thiefStartXPos;
     private float _thiefFinalXPos;
     private float _newXPos;
