@@ -5,15 +5,15 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class OpenCloseDoorOnTrigger : MonoBehaviour
+public class DoorTrigger : MonoBehaviour
 {
     [SerializeField] private GameObject _door;
     [SerializeField] private UnityEvent _doorOpened = new UnityEvent();
     [SerializeField] private UnityEvent _doorClosed = new UnityEvent();
-    
+
     private const string Close = "Close";
     private const string Open = "Open";
-    
+
     private Animator _doorAnimator;
     private bool _thiefInside;
 
@@ -22,6 +22,7 @@ public class OpenCloseDoorOnTrigger : MonoBehaviour
         add => _doorOpened.AddListener(value);
         remove => _doorOpened.RemoveListener(value);
     }
+
     public event UnityAction DoorClosed
     {
         add => _doorClosed.AddListener(value);
@@ -31,12 +32,12 @@ public class OpenCloseDoorOnTrigger : MonoBehaviour
     private void Start()
     {
         _doorAnimator = _door.GetComponent<Animator>();
-        _doorAnimator.enabled = true;
+        // _doorAnimator.enabled = true;
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.TryGetComponent<ThiefController>(out ThiefController thiefController))
+        if (col.TryGetComponent<Thief>(out Thief thiefController))
         {
             if (_thiefInside)
             {
@@ -46,7 +47,6 @@ public class OpenCloseDoorOnTrigger : MonoBehaviour
             }
             else
             {
-                Debug.Log("Open the door!");
                 _doorAnimator.SetTrigger(Open);
                 _doorOpened.Invoke();
                 _thiefInside = true;
