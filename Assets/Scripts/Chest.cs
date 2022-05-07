@@ -28,7 +28,7 @@ public class Chest : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D col)
     {
         Debug.Log("OnCollisionEnter2D");
-        if (col.gameObject.CompareTag(Thief))
+        if (col.collider.TryGetComponent<Thief>(out Thief thief))
         {
             Debug.Log("OnCollisionEnter2D Thief");
             _coin.SetActive(true);
