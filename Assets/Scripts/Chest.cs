@@ -10,7 +10,8 @@ public class Chest : MonoBehaviour
 
     private const string Open = "Open";
     private const string Jump = "Jump";
-    
+    private const string Thief = "Thief";
+
     private Animator _chestAnimator;
     private Animator _coinAnimator;
 
@@ -23,14 +24,25 @@ public class Chest : MonoBehaviour
         // _coinAnimator.enabled = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
+    private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.TryGetComponent<Thief>(out Thief thiefController))
+        if (col.gameObject.CompareTag(Thief))
         {
-            Debug.Log("OnTriggerEnter2D chest");
+            Debug.Log("OnCollisionEnter2D chest");
             // gameObject.SetActive(true);
             _chestAnimator.SetTrigger(Open);
             _coinAnimator.SetTrigger(Jump);
         }
     }
+
+    // private void OnTriggerEnter2D(Collider2D col)
+    // {
+    //     if (col.TryGetComponent<Thief>(out Thief thiefController))
+    //     {
+    //         Debug.Log("OnTriggerEnter2D chest");
+    //         // gameObject.SetActive(true);
+    //         _chestAnimator.SetTrigger(Open);
+    //         _coinAnimator.SetTrigger(Jump);
+    //     }
+    // }
 }

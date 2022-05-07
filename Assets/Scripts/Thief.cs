@@ -11,8 +11,8 @@ public class Thief : MonoBehaviour
     private float _thiefStartXPos;
     private float _thiefEndXPos;
     private float _newXPos;
-    private float _time;
-    private bool _needMoveLeft = false;
+    private bool _moveLeft;
+    private Coroutine job;
 
     private void Start()
     {
@@ -22,35 +22,46 @@ public class Thief : MonoBehaviour
 
     private void Update()
     {
-        if (_needMoveLeft)
+        LaunchMovement();
+    }
+
+    public void LaunchMovement()
+    {
+        if (_moveLeft)
         {
-            _time = 0.0f;
-            Move(false);
+            StopJob();
+            job = StartCoroutine(Move(_thiefStartXPos));
         }
         else
         {
-            Move(true);
+            StopJob();
+            job = StartCoroutine(Move(_thiefEndXPos));
         }
     }
 
-    private void Move(bool right)
+    private IEnumerator Move(float endPosition)
     {
-        _time += Time.deltaTime;
-
-        if (right)
-        {
-            _newXPos = Mathf.MoveTowards(_thiefStartXPos, _thiefEndXPos, _speed * _time);
-        }
-        else
-        {
-            _newXPos = Mathf.MoveTowards(transform.position.x, _thiefStartXPos, _speed * _time);
-        }
-
+        _newXPos = Mathf.MoveTowards(transform.position.x, endPosition, _speed * Time.deltaTime);
         transform.position = new Vector3(_newXPos, transform.position.y);
 
-        if (transform.position.x == _thiefEndXPos)
+        if (transform.position.x == _endPoint.position.x)
         {
-            _needMoveLeft = true;
+            _moveLeft = true;
+        }
+
+        Debug.Log($"transform.position.x {transform.position.x}");
+        Debug.Log($"endPosition {endPosition}");
+        Debug.Log($"_speed * Time.deltaTime {_speed * Time.deltaTime}");
+        Debug.Log($"_newXPos {_newXPos}");
+
+        yield return null;
+    }
+
+    private void StopJob()
+    {
+        if (job != null)
+        {
+            StopCoroutine(job);
         }
     }
 }

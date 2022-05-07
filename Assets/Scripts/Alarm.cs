@@ -9,6 +9,8 @@ public class Alarm : MonoBehaviour
     [Range(0.0f, 1.0f)] [SerializeField] private float _maxSoundVolume;
 
     private float _volumeStep = 0.2f;
+    private float _zeroSoundVolume = 0.0f;
+    private Coroutine job;
 
     private void Start()
     {
@@ -16,30 +18,40 @@ public class Alarm : MonoBehaviour
         _audioSource.volume = 0;
     }
 
-    public void LaunchAlarm(bool up)
+    public void Launch(bool up)
     {
-        StartCoroutine(DoAlarm(up));
-    }
-
-    private IEnumerator DoAlarm(bool up)
-    {
-        var waitForOneSeconds = new WaitForSeconds(1f);
-
         if (up)
         {
-            while (_audioSource.volume < _maxSoundVolume)
-            {
-                _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _maxSoundVolume, _volumeStep);
-                yield return waitForOneSeconds;
-            }
+            StopJob();
+            job = StartCoroutine(DoAlarm(_maxSoundVolume));
         }
         else
         {
-            while (_audioSource.volume > 0.0f)
-            {
-                _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, 0f, _volumeStep);
-                yield return waitForOneSeconds;
-            }
+            StopJob();
+            job = StartCoroutine(DoAlarm(_zeroSoundVolume));
+        }
+    }
+
+    private IEnumerator DoAlarm(float targetVolume)
+    {
+        var waitForOneSeconds = new WaitForSeconds(1f);
+
+        float resultVolume;
+
+        while (_audioSource.volume != targetVolume)
+        {
+            resultVolume = Mathf.MoveTowards(_audioSource.volume, targetVolume, _volumeStep);
+            _audioSource.volume = resultVolume;
+
+            yield return waitForOneSeconds;
+        }
+    }
+
+    private void StopJob()
+    {
+        if (job != null)
+        {
+            StopCoroutine(job);
         }
     }
 }

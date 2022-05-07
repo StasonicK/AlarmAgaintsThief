@@ -8,31 +8,30 @@ using UnityEngine.Events;
 public class DoorTrigger : MonoBehaviour
 {
     [SerializeField] private GameObject _door;
-    [SerializeField] private UnityEvent _doorOpened = new UnityEvent();
-    [SerializeField] private UnityEvent _doorClosed = new UnityEvent();
+    [SerializeField] private UnityEvent _opened = new UnityEvent();
+    [SerializeField] private UnityEvent _closed = new UnityEvent();
 
     private const string Close = "Close";
     private const string Open = "Open";
 
-    private Animator _doorAnimator;
+    private Animator _animator;
     private bool _thiefInside;
 
-    public event UnityAction DoorOpened
+    public event UnityAction Opened
     {
-        add => _doorOpened.AddListener(value);
-        remove => _doorOpened.RemoveListener(value);
+        add => _opened.AddListener(value);
+        remove => _opened.RemoveListener(value);
     }
 
-    public event UnityAction DoorClosed
+    public event UnityAction Closed
     {
-        add => _doorClosed.AddListener(value);
-        remove => _doorClosed.RemoveListener(value);
+        add => _closed.AddListener(value);
+        remove => _closed.RemoveListener(value);
     }
 
     private void Start()
     {
-        _doorAnimator = _door.GetComponent<Animator>();
-        // _doorAnimator.enabled = true;
+        _animator = _door.GetComponent<Animator>();
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -41,14 +40,14 @@ public class DoorTrigger : MonoBehaviour
         {
             if (_thiefInside)
             {
-                _doorAnimator.SetTrigger(Close);
+                _animator.SetTrigger(Close);
                 _thiefInside = false;
-                _doorClosed.Invoke();
+                _closed.Invoke();
             }
             else
             {
-                _doorAnimator.SetTrigger(Open);
-                _doorOpened.Invoke();
+                _animator.SetTrigger(Open);
+                _opened.Invoke();
                 _thiefInside = true;
             }
         }

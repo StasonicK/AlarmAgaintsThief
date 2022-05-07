@@ -400,7 +400,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c2b9f0bfedb85c4b88e0aa82a85ecc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _thief: {fileID: 0}
 --- !u!1 &426845821
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,12 +695,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _door: {fileID: 931194173}
-  _doorOpened:
+  _opened:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1162066538}
         m_TargetAssemblyTypeName: Alarm, Assembly-CSharp
-        m_MethodName: LaunchAlarm
+        m_MethodName: Launch
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -711,12 +710,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  _doorClosed:
+  _closed:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1162066538}
         m_TargetAssemblyTypeName: Alarm, Assembly-CSharp
-        m_MethodName: LaunchAlarm
+        m_MethodName: Launch
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -835,7 +834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioSource: {fileID: 1162066537}
-  _maxSoundVolume: 0.8
+  _maxSoundVolume: 1
 --- !u!1 &1175034877
 GameObject:
   m_ObjectHideFlags: 0
@@ -851,7 +850,7 @@ GameObject:
   - component: {fileID: 1175034881}
   m_Layer: 0
   m_Name: Thief
-  m_TagString: Untagged
+  m_TagString: Thief
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
