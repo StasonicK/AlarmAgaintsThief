@@ -17,32 +17,23 @@ public class Chest : MonoBehaviour
 
     private void Start()
     {
-        // _coin.SetActive(false);
+        Debug.Log("Chest Start");
+        _coin.SetActive(false);
         _chestAnimator = _chest.GetComponent<Animator>();
         // _chestAnimator.enabled = true;
         _coinAnimator = _coin.GetComponent<Animator>();
         // _coinAnimator.enabled = true;
     }
-
+    
     private void OnCollisionEnter2D(Collision2D col)
     {
+        Debug.Log("OnCollisionEnter2D");
         if (col.gameObject.CompareTag(Thief))
         {
-            Debug.Log("OnCollisionEnter2D chest");
-            // gameObject.SetActive(true);
+            Debug.Log("OnCollisionEnter2D Thief");
+            _coin.SetActive(true);
             _chestAnimator.SetTrigger(Open);
             _coinAnimator.SetTrigger(Jump);
         }
     }
-
-    // private void OnTriggerEnter2D(Collider2D col)
-    // {
-    //     if (col.TryGetComponent<Thief>(out Thief thiefController))
-    //     {
-    //         Debug.Log("OnTriggerEnter2D chest");
-    //         // gameObject.SetActive(true);
-    //         _chestAnimator.SetTrigger(Open);
-    //         _coinAnimator.SetTrigger(Jump);
-    //     }
-    // }
 }

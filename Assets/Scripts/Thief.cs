@@ -49,10 +49,10 @@ public class Thief : MonoBehaviour
             _moveLeft = true;
         }
 
-        Debug.Log($"transform.position.x {transform.position.x}");
-        Debug.Log($"endPosition {endPosition}");
-        Debug.Log($"_speed * Time.deltaTime {_speed * Time.deltaTime}");
-        Debug.Log($"_newXPos {_newXPos}");
+        // Debug.Log($"transform.position.x {transform.position.x}");
+        // Debug.Log($"endPosition {endPosition}");
+        // Debug.Log($"_speed * Time.deltaTime {_speed * Time.deltaTime}");
+        // Debug.Log($"_newXPos {_newXPos}");
 
         yield return null;
     }
