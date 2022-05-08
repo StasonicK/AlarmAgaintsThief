@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Chest : MonoBehaviour
+public class ChestAndCoinObj : MonoBehaviour
 {
     [SerializeField] private GameObject _chest;
-    [SerializeField] private GameObject _coin;
+    [SerializeField] private Coin _coin;
 
     private const string Open = "Open";
     private const string Jump = "Jump";
@@ -17,20 +17,15 @@ public class Chest : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("Chest Start");
         _coin.SetActive(false);
         _chestAnimator = _chest.GetComponent<Animator>();
-        // _chestAnimator.enabled = true;
         _coinAnimator = _coin.GetComponent<Animator>();
-        // _coinAnimator.enabled = true;
     }
     
     private void OnCollisionEnter2D(Collision2D col)
     {
-        Debug.Log("OnCollisionEnter2D");
         if (col.collider.TryGetComponent<Thief>(out Thief thief))
         {
-            Debug.Log("OnCollisionEnter2D Thief");
             _coin.SetActive(true);
             _chestAnimator.SetTrigger(Open);
             _coinAnimator.SetTrigger(Jump);

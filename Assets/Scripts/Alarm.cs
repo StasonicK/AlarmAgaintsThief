@@ -10,7 +10,7 @@ public class Alarm : MonoBehaviour
 
     private float _volumeStep = 0.2f;
     private float _zeroSoundVolume = 0.0f;
-    private Coroutine job;
+    private Coroutine _doAlarmJob;
 
     private void Start()
     {
@@ -18,17 +18,17 @@ public class Alarm : MonoBehaviour
         _audioSource.volume = 0;
     }
 
-    public void Launch(bool up)
+    public void Launch(bool isThiefInside)
     {
-        if (up)
+        if (isThiefInside)
         {
             StopJob();
-            job = StartCoroutine(DoAlarm(_maxSoundVolume));
+            _doAlarmJob = StartCoroutine(DoAlarm(_maxSoundVolume));
         }
         else
         {
             StopJob();
-            job = StartCoroutine(DoAlarm(_zeroSoundVolume));
+            _doAlarmJob = StartCoroutine(DoAlarm(_zeroSoundVolume));
         }
     }
 
@@ -49,9 +49,9 @@ public class Alarm : MonoBehaviour
 
     private void StopJob()
     {
-        if (job != null)
+        if (_doAlarmJob != null)
         {
-            StopCoroutine(job);
+            StopCoroutine(_doAlarmJob);
         }
     }
 }

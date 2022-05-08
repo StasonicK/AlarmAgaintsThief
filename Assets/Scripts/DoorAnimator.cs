@@ -5,11 +5,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class DoorTrigger : MonoBehaviour
+public class DoorAnimator : MonoBehaviour
 {
     [SerializeField] private GameObject _door;
-    [SerializeField] private UnityEvent _opened = new UnityEvent();
-    [SerializeField] private UnityEvent _closed = new UnityEvent();
+    [SerializeField] private Alarm _alarm;
+    [SerializeField] private UnityEvent _isOpened = new UnityEvent();
 
     private const string Close = "Close";
     private const string Open = "Open";
@@ -17,16 +17,10 @@ public class DoorTrigger : MonoBehaviour
     private Animator _animator;
     private bool _thiefInside;
 
-    public event UnityAction Opened
+    public event UnityAction IsOpened
     {
-        add => _opened.AddListener(value);
-        remove => _opened.RemoveListener(value);
-    }
-
-    public event UnityAction Closed
-    {
-        add => _closed.AddListener(value);
-        remove => _closed.RemoveListener(value);
+        add => _isOpened.AddListener(value);
+        remove => _isOpened.RemoveListener(value);
     }
 
     private void Start()
@@ -41,13 +35,15 @@ public class DoorTrigger : MonoBehaviour
             if (_thiefInside)
             {
                 _animator.SetTrigger(Close);
+                _alarm.Launch(_thiefInside);
                 _thiefInside = false;
-                _closed.Invoke();
+                _isOpened.Invoke();
             }
             else
             {
                 _animator.SetTrigger(Open);
-                _opened.Invoke();
+                _alarm.Launch(_thiefInside);
+                _isOpened.Invoke();
                 _thiefInside = true;
             }
         }

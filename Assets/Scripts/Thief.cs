@@ -12,7 +12,7 @@ public class Thief : MonoBehaviour
     private float _thiefEndXPos;
     private float _newXPos;
     private bool _moveLeft;
-    private Coroutine job;
+    private Coroutine _moveJob;
 
     private void Start()
     {
@@ -30,12 +30,12 @@ public class Thief : MonoBehaviour
         if (_moveLeft)
         {
             StopJob();
-            job = StartCoroutine(Move(_thiefStartXPos));
+            _moveJob = StartCoroutine(Move(_thiefStartXPos));
         }
         else
         {
             StopJob();
-            job = StartCoroutine(Move(_thiefEndXPos));
+            _moveJob = StartCoroutine(Move(_thiefEndXPos));
         }
     }
 
@@ -49,19 +49,14 @@ public class Thief : MonoBehaviour
             _moveLeft = true;
         }
 
-        // Debug.Log($"transform.position.x {transform.position.x}");
-        // Debug.Log($"endPosition {endPosition}");
-        // Debug.Log($"_speed * Time.deltaTime {_speed * Time.deltaTime}");
-        // Debug.Log($"_newXPos {_newXPos}");
-
         yield return null;
     }
 
     private void StopJob()
     {
-        if (job != null)
+        if (_moveJob != null)
         {
-            StopCoroutine(job);
+            StopCoroutine(_moveJob);
         }
     }
 }
