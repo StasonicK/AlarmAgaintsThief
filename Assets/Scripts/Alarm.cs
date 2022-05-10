@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,11 +7,22 @@ using UnityEngine;
 public class Alarm : MonoBehaviour
 {
     [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private Door _door;
     [Range(0.0f, 1.0f)] [SerializeField] private float _maxSoundVolume;
 
     private float _volumeStep = 0.2f;
     private float _zeroSoundVolume = 0.0f;
     private Coroutine _doAlarmJob;
+
+    private void OnEnable()
+    {
+        _door.Opened += Launch;
+    }
+
+    private void OnDisable()
+    {
+        _door.Opened -= Launch;
+    }
 
     private void Start()
     {
@@ -18,18 +30,11 @@ public class Alarm : MonoBehaviour
         _audioSource.volume = 0;
     }
 
-    public void Launch(bool isThiefInside)
+    public void Launch(bool up)
     {
-        if (isThiefInside)
-        {
-            StopJob();
-            _doAlarmJob = StartCoroutine(DoAlarm(_maxSoundVolume));
-        }
-        else
-        {
-            StopJob();
-            _doAlarmJob = StartCoroutine(DoAlarm(_zeroSoundVolume));
-        }
+        StopJob();
+        float targetVolume = up ? _maxSoundVolume : _zeroSoundVolume;
+        _doAlarmJob = StartCoroutine(DoAlarm(targetVolume));
     }
 
     private IEnumerator DoAlarm(float targetVolume)
