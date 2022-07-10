@@ -41,11 +41,9 @@ public class Alarm : MonoBehaviour
     {
         var waitForOneSeconds = new WaitForSeconds(1f);
 
-        float resultVolume;
-
         while (_audioSource.volume != targetVolume)
         {
-            resultVolume = Mathf.MoveTowards(_audioSource.volume, targetVolume, _volumeStep);
+            var resultVolume = Mathf.MoveTowards(_audioSource.volume, targetVolume, _volumeStep);
             _audioSource.volume = resultVolume;
 
             yield return waitForOneSeconds;
